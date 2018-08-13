@@ -1,0 +1,32 @@
+{
+  "name": "corrently-node-discovergy",
+  "version": "0.0.1",
+  "description": "Corrently Asset dezentraliced performance monitoring using Discovergy API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/energychain/Corrently-Node-Discovergy.git"
+  },
+  "keywords": [
+    "discovergy",
+    "smartmeter",
+    "performance",
+    "generation",
+    "distributed",
+    "due",
+    "diligence"
+  ],
+  "author": "Thorsten Zoerner <thorsten.zoerner@stromdao.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/energychain/Corrently-Node-Discovergy/issues"
+  },
+  "homepage": "https://github.com/energychain/Corrently-Node-Discovergy#readme",
+  "dependencies": {
+    "corrently-node": "0.0.3",
+    "dotenv": "^6.0.0"
+  }
+}
