@@ -1,6 +1,6 @@
 {
 	"name": "corrently-node-discovergy",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "Corrently Asset dezentraliced performance monitoring using Discovergy API",
 	"keywords": [
 		"discovergy",
@@ -29,7 +29,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
-		"corrently-node": "0.0.3",
+		"corrently-node": "0.0.10",
 		"dotenv": "^6.0.0",
 		"start-stop-daemon": "^0.1.1"
 	}
