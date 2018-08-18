@@ -56,6 +56,7 @@ startStopDaemon({}, function() {
 
     }
     var retrieveConfig = function() {
+      console.log("Try retrieveConfig");
         db.get("config-discovergy").then(function(doc) {
           var config = JSON.parse(decrypt(doc.config,process.env.PRIVATEKEY));
           process.env.DISCOVERGY_METERS=config.DISCOVERGY_METERS;
@@ -64,25 +65,38 @@ startStopDaemon({}, function() {
           console.log("Retrieved Config");
           doc.lastUpdate=new Date();
           db.put(doc);
-
+          console.log("***************************** SPAWN SERVICE");
           discovergyService();
 
-        }).catch(function() {
-          if(typeof process.env.DISCOVERGY_METERS!="undefined") {
-              var config={};
-              config.DISCOVERGY_METERS=process.env.DISCOVERGY_METERS;
-              config.DISCOVERGY_USERNAME=process.env.DISCOVERGY_USERNAME;
-              config.DISCOVERGY_PASSWORD=process.env.DISCOVERGY_PASSWORD;
-              var config_encrypted=encrypt(JSON.stringify(config),process.env.PRIVATEKEY);
-              db.put({_id:'config-discovergy',config:config_encrypted}).then(function(e) {
-                  console.log("Finished Setup",e);
-                  discovergyService();
-              });
+        }).catch(function(e) {
+          if((typeof e.errno != "undefined")&&(e.errno=="ECONNREFUSED")) {
+
+                  var service = require("corrently-node");
+                  service(function() {
+                      console.log("***************************** STARTED");
+                      retrieveConfig();
+                  });
+
           } else {
-              console.log("No configuration found will try again, maybe need to be published by remote peer");
-              setTimeout(function() {
-                  retrieveConfig();
-              },60000);
+              if(typeof process.env.DISCOVERGY_METERS!="undefined") {
+                  console.log("***************************** Config from Environment");
+                  var config={};
+                  config.DISCOVERGY_METERS=process.env.DISCOVERGY_METERS;
+                  config.DISCOVERGY_USERNAME=process.env.DISCOVERGY_USERNAME;
+                  config.DISCOVERGY_PASSWORD=process.env.DISCOVERGY_PASSWORD;
+                  var config_encrypted=encrypt(JSON.stringify(config),process.env.PRIVATEKEY);
+                  db.put({_id:'config-discovergy',config:config_encrypted}).then(function(e) {
+                      console.log("Finished Setup",e);
+                      discovergyService();
+                  }).catch(function(e) {
+                     discovergyService();
+                  });
+              } else {
+                  console.log("No configuration found will try again, maybe need to be published by remote peer");
+                  setTimeout(function() {
+                      retrieveConfig();
+                  },60000);
+              }
           }
       });
     };
