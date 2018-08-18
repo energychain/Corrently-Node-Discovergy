@@ -20,8 +20,19 @@ startStopDaemon({}, function() {
     return dec;
   }
 
-  var service = require("corrently-node");
-  service(function(db,kv) {
+  const PouchDB = require('pouchdb');
+  const localPouch = PouchDB.defaults();
+  localPouch.plugin(require('pouchdb-upsert'));
+  var db = new localPouch("http://localhost:"+process.env.POUCHDB_FAUXTON_PORT+"/local");
+  const commandLineArgs = require('command-line-args');
+  const optionDefinitions = [
+    { name: 'daemonize', alias: 'd',type: Boolean } ,
+    { name: 'start', type: Boolean },
+    { name: 'stop', type: Boolean },
+    { name: 'restart', type: Boolean }
+  ];
+  const options = commandLineArgs(optionDefinitions);
+    console.log("Starting Discovergy Service");
     var discovergyService=function() {
 
       var discovergy = require("./discovergy.js");
@@ -39,7 +50,9 @@ startStopDaemon({}, function() {
           }
       }
       updateMeter();
-      setInterval(updateMeter,process.env.IDLE_REPUBLISH);
+      if((typeof options.start != "undefined")||(typeof options.restart != "undefined")||(typeof options.daemonize != "undefined")) {
+        setInterval(updateMeter,process.env.IDLE_REPUBLISH);
+      }
 
     }
     var retrieveConfig = function() {
@@ -51,7 +64,7 @@ startStopDaemon({}, function() {
           console.log("Retrieved Config");
           doc.lastUpdate=new Date();
           db.put(doc);
-          
+
           discovergyService();
 
         }).catch(function() {
@@ -74,5 +87,5 @@ startStopDaemon({}, function() {
       });
     };
     retrieveConfig();
-  });
+
 });
