@@ -34,11 +34,15 @@ startStopDaemon({}, function() {
   const options = commandLineArgs(optionDefinitions);
     console.log("Starting Discovergy Service");
 
-    if(typeof process.env.HTTP_PORT != "undefined") {
+    if((typeof process.env.HTTP_PORT != "undefined")||(typeof process.env.PORT != "undefined")) {
+        var port = 80;
+        if(typeof process.env.HTTP_PORT != "undefined") port=typeof process.env.HTTP_PORT;
+        if(typeof process.env.PORT != "undefined") port=typeof process.env.PORT;
+
         const express = require('express');
         const app = express();
         app.get('/', function (req, res) {
-              res.send("Authority:"+process.env.ACCOUNT);
+              res.send("Authority:"+process.env.PORT);
         });
         app.listen(process.env.HTTP_PORT, function () {
         });
