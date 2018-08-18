@@ -36,8 +36,8 @@ startStopDaemon({}, function() {
 
     if((typeof process.env.HTTP_PORT != "undefined")||(typeof process.env.PORT != "undefined")) {
         var port = 80;
-        if(typeof process.env.HTTP_PORT != "undefined") port=typeof process.env.HTTP_PORT;
-        if(typeof process.env.PORT != "undefined") port=typeof process.env.PORT;
+        if(typeof process.env.HTTP_PORT != "undefined") port=process.env.HTTP_PORT;
+        if(typeof process.env.PORT != "undefined") port=process.env.PORT;
 
         const express = require('express');
         const app = express();

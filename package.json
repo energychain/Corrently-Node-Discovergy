@@ -1,6 +1,6 @@
 {
 	"name": "corrently-node-discovergy",
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"description": "Corrently Asset dezentraliced performance monitoring using Discovergy API",
 	"keywords": [
 		"discovergy",
