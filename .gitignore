@@ -4,3 +4,4 @@ orbitdb/*
 .env
 log.txt
 info.log
+dumps/*
