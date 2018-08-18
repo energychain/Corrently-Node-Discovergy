@@ -33,8 +33,9 @@
 	},
 	"dependencies": {
 		"command-line-args": "^5.0.2",
-		"corrently-node": "0.0.10",
+		"corrently-node": "^0.0.23",
 		"dotenv": "^6.0.0",
+		"express": "^4.16.3",
 		"start-stop-daemon": "^0.1.1"
 	}
 }

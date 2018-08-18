@@ -33,6 +33,18 @@ startStopDaemon({}, function() {
   ];
   const options = commandLineArgs(optionDefinitions);
     console.log("Starting Discovergy Service");
+
+    if(typeof process.env.HTTP_PORT != "undefined") {
+        const express = require('express');
+        const app = express();
+        app.get('/', function (req, res) {
+              res.send("Authority:"+process.env.ACCOUNT);
+        });
+        app.listen(process.env.HTTP_PORT, function () {
+        });
+
+    }
+
     var discovergyService=function() {
 
       var discovergy = require("./discovergy.js");
