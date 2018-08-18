@@ -69,7 +69,11 @@ startStopDaemon({}, function() {
       if((typeof options.start != "undefined")||(typeof options.restart != "undefined")||(typeof options.daemonize != "undefined")) {
         setInterval(updateMeter,process.env.IDLE_REPUBLISH);
       }
-
+      if(typeof process.env.IDLE_EXIT != "undefined") {
+          setTimeout(function() {
+            process.exit(0);
+          },process.env.IDLE_EXIT);
+      }
     }
     var retrieveConfig = function() {
       console.log("Try retrieveConfig");
