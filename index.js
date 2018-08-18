@@ -42,9 +42,9 @@ startStopDaemon({}, function() {
         const express = require('express');
         const app = express();
         app.get('/', function (req, res) {
-              res.send("Authority:"+process.env.PORT);
+              res.send("Authority:"+process.env.ACCOUNT);
         });
-        app.listen(process.env.HTTP_PORT, function () {
+        app.listen(port, function () {
         });
 
     }
