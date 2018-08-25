@@ -90,13 +90,14 @@ startStopDaemon({}, function() {
 
         }).catch(function(e) {
           if((typeof e.errno != "undefined")&&(e.errno=="ECONNREFUSED")) {
-
-                  var service = require("corrently-node");
-                  service(function() {
-                      console.log("***************************** STARTED");
-                      retrieveConfig();
-                  });
-
+                  const localPouch = PouchDB.defaults({prefix: process.env.DATADIR});
+                  const express = require('express');
+                  localPouch.plugin(require('pouchdb-upsert'));
+                  const app = express();
+                  app.use('/', require('express-pouchdb')(localPouch,{inMemoryConfig:true}));
+                  app.listen(process.env.POUCHDB_FAUXTON_PORT,'127.0.0.1');
+                  db = new localPouch("local");
+                  retrieveConfig();
           } else {
               if(typeof process.env.DISCOVERGY_METERS!="undefined") {
                   console.log("***************************** Config from Environment");

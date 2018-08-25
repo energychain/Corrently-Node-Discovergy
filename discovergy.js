@@ -110,8 +110,11 @@ module.exports = async function(db,meterid,cbmain) {
         if(new Date().getTime()-max_ts>86400000) {
               var days=Math.floor((new Date().getTime()-max_ts)/86400000);
               fillHistoryDb(days,max_ts).then(function(x) {
-
                 doc.values=history;
+                if((typeof process.env.PUBLISHDIR != "undefined") &&( process.env.PUBLISHDIR != null)) {
+                  const fs = require("fs");
+                  fs.writeFileSync(process.env.PUBLISHDIR+meterid+".json",JSON.stringify(doc));
+                }
                 db.put(doc)
                       .then(function(c) {
                         if(typeof cbmain=="function") cbmain();
